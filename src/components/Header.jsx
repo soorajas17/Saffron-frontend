@@ -12,7 +12,7 @@ function Header() {
                         className="fw-bold fs-3"
                         style={{ color: "#B56A2D" }}
                     >
-                        Saffron & Spice
+                         Spices
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbar-nav" />
