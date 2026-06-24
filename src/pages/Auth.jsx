@@ -106,9 +106,9 @@ function Auth({ isRegister }) {
 
               <p className="fs-5 mt-3">
                 Discover authentic flavours,
-                reserve tables, track orders
+                reserve tables, experience  track orders
                 and enjoy a premium dining
-                experience.
+                experience .
               </p>
 
             </div>
