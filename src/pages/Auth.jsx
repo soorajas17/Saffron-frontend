@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link, Navigate} from "react-router-dom";
 import {
   FaGoogle,
   FaFacebookF,
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
+import { loginAPI, registerAPI } from "../services/allAPI";
+import { useNavigate } from 'react-router-dom'
 
 function Auth({ isRegister }) {
   const [showPassword, setShowPassword] = useState(false);
+
+   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -54,19 +58,74 @@ function Auth({ isRegister }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (validateForm()) {
-      setSuccess(
-        isRegister
-          ? "Account Created Successfully!"
-          : "Login Successful!"
-      );
+  if (!validateForm()) return;
 
-      console.log(formData);
+  try {
+    if (isRegister) {
+      const reqBody = {
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await registerAPI(reqBody);
+
+      if (result.status === 200) {
+        setSuccess("Account Created Successfully!");
+
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          password: "",
+        });
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        alert(result.response?.data);
+      }
+    } else {
+      const reqBody = {
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await loginAPI(reqBody);
+
+      if (result.status === 200) {
+        sessionStorage.setItem(
+          "token",
+          result.data.token
+        );
+
+        sessionStorage.setItem(
+          "existingUser",
+          JSON.stringify(result.data.user)
+        );
+
+        setSuccess("Login Successful!");
+
+        // Admin Login
+        if (result.data.user.role === "Admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        alert(result.response?.data);
+      }
     }
-  };
+  } catch (err) {
+    console.log(err);
+    alert("Something went wrong");
+  }
+};
 
   return (
     <div className="container-fluid p-0">
