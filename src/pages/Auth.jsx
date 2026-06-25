@@ -188,7 +188,7 @@ function Auth({ isRegister }) {
               <h2 className="fw-bold">
                 {isRegister
                   ? "Create Account"
-                  : "Welcome Back"}
+                  : "Welcome Back!!"}
               </h2>
 
               <p className="text-secondary">
