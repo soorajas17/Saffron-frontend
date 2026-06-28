@@ -1,0 +1,50 @@
+.nav-link {
+    color: #212529 !important;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #B56A2D !important;
+    border-bottom: 2px solid #B56A2D;
+}
+
+.active-nav {
+    color: #B56A2D !important;
+    border-bottom: 2px solid #B56A2D;
+}
+.header-icon{
+    color: #333;
+    transition:.3s;
+}
+.header-icon:hover{
+    color:#B56A2D;
+}
+
+.profile-circle{
+    width:38px;
+    height:38px;
+    border:1px solid #ddd;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:.3s;
+}
+
+.profile-circle:hover{
+    border-color:#B56A2D;
+    box-shadow:0 0 8px rgba(181,106,45,.4);
+}
+
+.dropdown-item{
+    border-radius:8px;
+}
+
+.dropdown-item:hover{
+    background:#F7E8D7;
+}
+#dropdown-profile::after {
+    display: none !important;
+}

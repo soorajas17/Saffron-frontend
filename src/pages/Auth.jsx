@@ -1,5 +1,11 @@
 import { useState } from "react";
+<<<<<<< HEAD
 import { Link, Navigate} from "react-router-dom";
+=======
+import { Link} from "react-router-dom";
+import { registerAPI, loginAPI } from "../services/allApi";
+import { useNavigate } from "react-router-dom";
+>>>>>>> 775fd5d79eb3c0c4fb775bd42bf525229f351345
 import {
   FaGoogle,
   FaFacebookF,
@@ -20,6 +26,8 @@ function Auth({ isRegister }) {
     phone: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
@@ -58,10 +66,15 @@ function Auth({ isRegister }) {
     return Object.keys(newErrors).length === 0;
   };
 
+<<<<<<< HEAD
+=======
+  // submit
+>>>>>>> 775fd5d79eb3c0c4fb775bd42bf525229f351345
   const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (!validateForm()) return;
+<<<<<<< HEAD
 
   try {
     if (isRegister) {
@@ -124,6 +137,41 @@ function Auth({ isRegister }) {
   } catch (err) {
     console.log(err);
     alert("Something went wrong");
+=======
+
+  try {
+
+    if (isRegister) {
+
+      const result = await registerAPI(formData);
+
+      if (result.status === 200) {
+        alert("Registration Successful");
+        navigate("/login");
+      }
+
+    } else {
+
+      const result = await loginAPI({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (result.status === 200) {
+
+        localStorage.setItem("token", result.data.token);
+        localStorage.setItem("user", JSON.stringify(result.data.user));
+
+        alert("Login Successful");
+
+        navigate("/");
+      }
+
+    }
+
+  } catch (err) {
+    alert(err.response?.data || "Something went wrong");
+>>>>>>> 775fd5d79eb3c0c4fb775bd42bf525229f351345
   }
 };
 
