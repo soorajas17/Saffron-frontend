@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link} from "react-router-dom";
+import { registerAPI, loginAPI } from "../services/allApi";
+import { useNavigate } from "react-router-dom";
 import {
   FaGoogle,
   FaFacebookF,
@@ -16,6 +18,8 @@ function Auth({ isRegister }) {
     phone: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
@@ -54,19 +58,46 @@ function Auth({ isRegister }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // submit
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (validateForm()) {
-      setSuccess(
-        isRegister
-          ? "Account Created Successfully!"
-          : "Login Successful!"
-      );
+  if (!validateForm()) return;
 
-      console.log(formData);
+  try {
+
+    if (isRegister) {
+
+      const result = await registerAPI(formData);
+
+      if (result.status === 200) {
+        alert("Registration Successful");
+        navigate("/login");
+      }
+
+    } else {
+
+      const result = await loginAPI({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (result.status === 200) {
+
+        localStorage.setItem("token", result.data.token);
+        localStorage.setItem("user", JSON.stringify(result.data.user));
+
+        alert("Login Successful");
+
+        navigate("/");
+      }
+
     }
-  };
+
+  } catch (err) {
+    alert(err.response?.data || "Something went wrong");
+  }
+};
 
   return (
     <div className="container-fluid p-0">
