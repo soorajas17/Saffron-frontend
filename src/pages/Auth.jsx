@@ -1,16 +1,24 @@
 import { useState } from "react";
+<<<<<<< HEAD
+import { Link, Navigate} from "react-router-dom";
+=======
 import { Link} from "react-router-dom";
 import { registerAPI, loginAPI } from "../services/allApi";
 import { useNavigate } from "react-router-dom";
+>>>>>>> 775fd5d79eb3c0c4fb775bd42bf525229f351345
 import {
   FaGoogle,
   FaFacebookF,
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
+import { loginAPI, registerAPI } from "../services/allAPI";
+import { useNavigate } from 'react-router-dom'
 
 function Auth({ isRegister }) {
   const [showPassword, setShowPassword] = useState(false);
+
+   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -58,11 +66,78 @@ function Auth({ isRegister }) {
     return Object.keys(newErrors).length === 0;
   };
 
+<<<<<<< HEAD
+=======
   // submit
+>>>>>>> 775fd5d79eb3c0c4fb775bd42bf525229f351345
   const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (!validateForm()) return;
+<<<<<<< HEAD
+
+  try {
+    if (isRegister) {
+      const reqBody = {
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await registerAPI(reqBody);
+
+      if (result.status === 200) {
+        setSuccess("Account Created Successfully!");
+
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          password: "",
+        });
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        alert(result.response?.data);
+      }
+    } else {
+      const reqBody = {
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await loginAPI(reqBody);
+
+      if (result.status === 200) {
+        sessionStorage.setItem(
+          "token",
+          result.data.token
+        );
+
+        sessionStorage.setItem(
+          "existingUser",
+          JSON.stringify(result.data.user)
+        );
+
+        setSuccess("Login Successful!");
+
+        // Admin Login
+        if (result.data.user.role === "Admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        alert(result.response?.data);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    alert("Something went wrong");
+=======
 
   try {
 
@@ -96,6 +171,7 @@ function Auth({ isRegister }) {
 
   } catch (err) {
     alert(err.response?.data || "Something went wrong");
+>>>>>>> 775fd5d79eb3c0c4fb775bd42bf525229f351345
   }
 };
 
@@ -160,7 +236,7 @@ function Auth({ isRegister }) {
               <h2 className="fw-bold">
                 {isRegister
                   ? "Create Account"
-                  : "Welcome Back"}
+                  : "Welcome Back!!"}
               </h2>
 
               <p className="text-secondary">
